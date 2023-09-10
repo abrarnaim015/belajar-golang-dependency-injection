@@ -49,103 +49,28 @@ Google Wire
 go get github.com/google/wire
 ```
 
-> Create Open Api Spec
+Istalation `Wire`
 
-- `apispec.json`
-  - like `sweger` atau dokumentasi api yang akan di buat
-
-> Create Database
-
-Create Database `belajar_golang_restful_api`
-
-```sql
-create database belajar_golang_restful_api;
-&
-create database belajar_golang_restful_api_test;
+```golang
+go install github.com/google/wire/cmd/wire@latest
 ```
 
-Create Table `category`
+Check `Wire` instalation Success
 
-```sql
-CREATE TABLE category (
-	id INTEGER PRIMARY KEY auto_increment,
-	name VARCHAR(200) NOT NULL
-)
+```golang
+wire help
 ```
 
-> Step By Step
+untuk menjalankan `google wire` dan meninject cukup masuk ke file injectornya lalu
 
-1. Create `Repository` Folder
+```golang
+wire
+```
 
-   - `category_repository.go`
-   - `category_repository_impl.go`
-     - Untuk `query` ke `Database`
+jika ingin dari luar dan filenya ada di dalam folder bisa menggunakan
 
-2. Create `Service` Folder
+```golang
+wire gen {nama module}/{folder}
+```
 
-   - `category_service.go`
-   - `category_service_impl.go`
-     - untuk `logic` dan pengolahan data yang di dapat dari `Databasae`
-
-3. Create `Controller` Folder
-
-   - `category_controller.go`
-   - `category_controller_impl.go`
-     - untuk mengambil data yang telah di olah di `Sevice` dan dan di return sebagai `response` API
-
-4. `app` Folder -> config
-
-   - `database.go`
-     - setup config database
-   - `router.go`
-     - setup router dan kumpulan dari semua `endpoint` API
-
-5. `exception` Folder -> handler `error`
-
-   - `error_handler.go`
-     - handler err speerti:
-       - `notFoundErr`
-       - `validator`
-       - `internal server err`
-   - `error_not_found.go`
-     - karana error notfound tidak err yang di dapat dari database dan tidak ada triker spesifik maka butuh di buat `struct` agar bisa di persifikasi dan balikan dari kondisi `notfound`
-     - sedangakan `validate` sudah di handle oleh `validator`
-     - dan `internal server err` pun sama karna server yang tidak dapat response atau mati
-
-6. `Helper` Folder -> function yang `reuseble`
-
-   - `error.go`
-     - handle err balikan di varible
-   - `tx.go`
-     - handle `commit` dan `rollback` dari `tx`
-   - `json.go`
-     - handle `read` data `body` dan di `decode` agar bisa di olah
-     - handle `write` nge `encode` data yang telah di olah untuk menjadi `response`
-   - `model.go`
-     - `ToCategoryRes`
-       - template response di properti `data` untuk singgle data
-     - `ToCategoryResult`
-       - template response di properti `data` untuk data yang banyak, seperti untuk `findAll`
-
-7. `model` Folder -> jika di TS seperti `entity`
-
-   - `domain`
-     - model dari `category` dan diperuntukan supaya kita bisa nge `filter` data yang mau di `show` atau di `hide` data dari `database`
-   - `web`
-     - `category_create_req.go` ->
-       - `entity` atau `model` dari data `body` yang di kirim dari Api `create category`
-     - `category_res.go`
-       - model untuk response api
-     - `category_update_req.go`
-       - model untuk response api update
-     - `web_res.go`
-       - struktur date response api
-
-8. `middleware` Folder
-
-   - `auth_middleware.go`
-     - handle `AuthMiddleware` api
-
-9. `test` Folder
-   - `category_controller_test.go`
-     - test by endpoint
+maka file `wire_gen.go` akan dibuat secara otomatis

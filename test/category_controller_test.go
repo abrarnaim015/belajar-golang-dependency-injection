@@ -39,13 +39,13 @@ func setupTestDB() *sql.DB {
 func setupRouter(db *sql.DB) http.Handler  {
 	validate := validator.New()
 
-	categoryRepository := repository.NewCategoryRepository()
-	categoryService := service.NewCategoryService(categoryRepository, db, validate)
-	categoryController := controller.NewCategoryController(categoryService)
+	categoryRepository := repository.NewCategoryRepositoryImpl()
+	categoryService := service.NewCategoryServiceImpl(categoryRepository, db, validate)
+	categoryController := controller.NewCategoryControllerImpl(categoryService)
 
 	router := app.NewRouter(categoryController)
 
-	return middleware.NewAuthMiddleware(router)
+	return middleware.NewAuthMiddlewareImpl(router)
 }
 
 func truncateCategory(db *sql.DB)  {
@@ -114,7 +114,7 @@ func TestUpdateCategorySuccess(t *testing.T)  {
 	truncateCategory(db)
 
 	tx, _ := db.Begin()
-	category := repository.NewCategoryRepository().Save(context.Background(), tx, domain.Category{
+	category := repository.NewCategoryRepositoryImpl().Save(context.Background(), tx, domain.Category{
 		Name: "Gadget",
 	})
 	tx.Commit()
@@ -147,7 +147,7 @@ func TestUpdateCategoryFailed(t *testing.T)  {
 	truncateCategory(db)
 
 	tx, _ := db.Begin()
-	category := repository.NewCategoryRepository().Save(context.Background(), tx, domain.Category{
+	category := repository.NewCategoryRepositoryImpl().Save(context.Background(), tx, domain.Category{
 		Name: "Gadget",
 	})
 	tx.Commit()
@@ -181,7 +181,7 @@ func TestGetCategorySuccess(t *testing.T)  {
 	truncateCategory(db)
 
 	tx, _ := db.Begin()
-	category := repository.NewCategoryRepository().Save(context.Background(), tx, domain.Category{
+	category := repository.NewCategoryRepositoryImpl().Save(context.Background(), tx, domain.Category{
 		Name: "Gadget",
 	})
 	tx.Commit()
@@ -238,7 +238,7 @@ func TestDeleteCategorySuccess(t *testing.T)  {
 	truncateCategory(db)
 
 	tx, _ := db.Begin()
-	category := repository.NewCategoryRepository().Save(context.Background(), tx, domain.Category{
+	category := repository.NewCategoryRepositoryImpl().Save(context.Background(), tx, domain.Category{
 		Name: "Gadget",
 	})
 	tx.Commit()
@@ -293,7 +293,7 @@ func TestListCategorySuccess(t *testing.T)  {
 	truncateCategory(db)
 
 	tx, _ := db.Begin()
-	category := repository.NewCategoryRepository().Save(context.Background(), tx, domain.Category{
+	category := repository.NewCategoryRepositoryImpl().Save(context.Background(), tx, domain.Category{
 		Name: "Gadget",
 	})
 	tx.Commit()

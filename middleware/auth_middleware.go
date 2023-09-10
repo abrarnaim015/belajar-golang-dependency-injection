@@ -11,7 +11,7 @@ type AuthMiddleware struct {
 	Handler http.Handler
 }
 
-func NewAuthMiddleware(handler http.Handler) *AuthMiddleware  {
+func NewAuthMiddlewareImpl(handler http.Handler) *AuthMiddleware  {
 	return &AuthMiddleware{Handler: handler}
 }
 
